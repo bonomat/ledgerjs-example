@@ -16,6 +16,8 @@ For that:
 3. Install `Bitcoin Test (BTC)`
 4. Make sure to terminate Ledger Live afterwards as only 1 app can connect to your Ledger at the same time.
 5. Make sure to have at least 0.001 tBTC on your account (https://testnet-faucet.mempool.co)
+6. Make sure to have at least 0.1 ETH on Ropsten.
+7. Make sure to disable `Browser support` in the Ethereum App on your Ledger Nano S
 
 ## How To
 

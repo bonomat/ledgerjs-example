@@ -1,17 +1,17 @@
-import { first, map, reduce, tap } from "rxjs/operators";
-import { Wallet } from "./wallet";
+// https://github.com/LedgerHQ/ledgerjs/blob/master/docs/ethereum_ledger_integration.md
 import {
     getCurrencyBridge,
     getAccountBridge,
 } from "@ledgerhq/live-common/lib/bridge";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
+import { first, map, reduce, tap } from "rxjs/operators";
 
-export class BitcoinWallet implements Wallet {
+export class Ethereum {
     private currencyBridge: any;
 
     constructor(private currency: any) {
-        if (this.currency.id !== "bitcoin_testnet") {
-            throw new Error("Wallet only supports testnet bitcoin");
+        if (this.currency.id !== "ethereum_ropsten") {
+            throw new Error("Wallet only supports ethereum");
         }
     }
 
