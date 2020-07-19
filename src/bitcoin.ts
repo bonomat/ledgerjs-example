@@ -1,29 +1,24 @@
 import { first, map, reduce, tap } from "rxjs/operators";
 import { Wallet } from "./wallet";
-
-const {
+import {
     getCurrencyBridge,
     getAccountBridge,
-} = require("@ledgerhq/live-common/lib/bridge");
-const {
-    getCryptoCurrencyById,
+} from "@ledgerhq/live-common/lib/bridge";
+import {
     formatCurrencyUnit,
-} = require("@ledgerhq/live-common/lib/currencies");
+} from "@ledgerhq/live-common/lib/currencies";
 
 export class BitcoinWallet implements Wallet {
     private currencyBridge: any;
     private initialized: boolean;
-    private currency: any;
 
-    constructor(private currencyId: String) {
-        if (this.currencyId !== "bitcoin_testnet") {
+    constructor(private currency: any) {
+        if (this.currency.id !== "bitcoin_testnet") {
             throw new Error("Wallet only supports testnet bitcoin");
         }
     }
 
     public async init() {
-        this.currency = getCryptoCurrencyById(this.currencyId);
-
         // currency bridge is the interface to scan accounts of the device
         this.currencyBridge = getCurrencyBridge(this.currency);
         // some currency requires some data to be loaded (today it's not highly used but will be more and more)

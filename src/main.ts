@@ -1,24 +1,16 @@
 import { BitcoinWallet } from "./bitcoin";
-const {
+import {
     getCryptoCurrencyById,
     parseCurrencyUnit,
-} = require("@ledgerhq/live-common/lib/currencies");
+} from "@ledgerhq/live-common/lib/currencies";
+import { registerTransportModule } from "@ledgerhq/live-common/lib/hw";
+import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
+import implementLibcore from "@ledgerhq/live-common/lib/libcore/platforms/nodejs";
+import { setSupportedCurrencies } from "@ledgerhq/live-common/lib/data/cryptocurrencies";
 const {} = require("@ledgerhq/live-common/lib/bridge");
 
-import Transport from "@ledgerhq/hw-transport-node-hid-noevents";
-const { registerTransportModule } = require("@ledgerhq/live-common/lib/hw");
-const TransportNodeHid = require("@ledgerhq/hw-transport-node-hid").default;
-const implementLibcore = require("@ledgerhq/live-common/lib/libcore/platforms/nodejs")
-    .default;
-const {
-    setSupportedCurrencies,
-} = require("@ledgerhq/live-common/lib/data/cryptocurrencies");
-
-const currencyId = "bitcoin_testnet";
-const currency = getCryptoCurrencyById(currencyId);
-let bitcoin = "0.001";
-const satoshi = parseCurrencyUnit(currency.units[0], bitcoin);
 // configure which coins to enable
+let currencyId = "bitcoin_testnet";
 setSupportedCurrencies([currencyId]);
 
 // provide a libcore implementation
@@ -35,12 +27,14 @@ registerTransportModule({
 });
 
 async function main() {
-    const bitcoin = new BitcoinWallet(currencyId);
+    const currency = getCryptoCurrencyById(currencyId);
+    const bitcoin = new BitcoinWallet(currency);
     await bitcoin.init();
 
     await bitcoin.printNewAddress();
     await bitcoin.printBalance();
 
+    const satoshi = parseCurrencyUnit(currency.units[0], "0.001");
     const account = await bitcoin.getAccount();
     let recipient = account.freshAddress;
     console.log(`Sending ${satoshi} satoshi to address: ${recipient} `);
